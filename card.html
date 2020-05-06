@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>spux</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <script type="module">
+      import { html, render } from './web_modules/spux.js'
+
+      const title = 'Spux'
+
+      render(
+        html`
+          <h1>Welcome to ${title}!</h1>
+          <hr />
+          <h2>Cards</h2>
+          <hr />
+          <div class="row">
+            <div class="card col">
+              <img src="https://picsum.photos/400/300/?random" class="w-100" />
+              <h4>Card Title</h4>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Consectetur adipisci, asperiores odit repellat, explicabo
+                expedita atque aut illum.
+              </p>
+              <button class="btn">Okay</button>
+              <button class="btn primary">Cancel</button>
+            </div>
+            <div class="card col">
+              <img src="https://picsum.photos/400/301/?random" class="w-100" />
+              <h4>Card Title</h4>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Consectetur adipisci, asperiores odit repellat, explicabo
+                expedita atque aut illum.
+              </p>
+              <button class="btn">Okay</button>
+              <button class="btn primary">Cancel</button>
+            </div>
+          </div>
+        `,
+        document.body
+      )
+    </script>
+  </body>
+</html>
