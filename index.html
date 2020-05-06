@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>spux</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <script type="module">
+      import { html, render } from './web_modules/spux.js'
+
+      const title = 'Spux'
+
+      render(
+        html`
+          <h1>Welcome to ${title}!</h1>
+          <hr />
+          <h2>Examples</h2>
+          <hr />
+
+          Coming soon...
+        `,
+        document.body
+      )
+    </script>
+  </body>
+</html>
