@@ -7,7 +7,7 @@
     <script type="module">
       import { h, html, render, Component } from './web_modules/spux.js'
 
-      const C1 = props => html`
+      const InnerCircle = props => html`
         <circle
           cx="175"
           cy="175"
@@ -18,7 +18,7 @@
         ></circle>
       `
 
-      class C2 extends Component {
+      class OuterCircle extends Component {
         constructor (props) {
           super(props)
         }
@@ -77,8 +77,11 @@
         render () {
           return html`
             <svg width="300" height="300" viewBox="-25 -25 400 400">
-              <${C1} />
-              <${C2} amount="${this.props.amount}" hour="${this.props.hour}" />
+              <${InnerCircle} />
+              <${OuterCircle}
+                amount="${this.props.amount}"
+                hour="${this.props.hour}"
+              />
               <${Text}
                 amount="${Math.floor(this.props.amount / 30)}"
                 hour="${this.props.hour}"
@@ -127,4 +130,3 @@
     </script>
   </body>
 </html>
-
