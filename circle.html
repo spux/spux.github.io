@@ -2,6 +2,14 @@
   <head>
     <title>spux</title>
     <link rel="stylesheet" href="./css/style.css" />
+    <script type="module">
+      // globals
+      var data = {
+        amount: 0,
+        hour: 0
+      }
+      Object.assign(globalThis, data)
+    </script>
   </head>
   <body>
     <script type="module">
@@ -124,8 +132,6 @@
         }
       }
 
-      var amount = 0
-      var hour = 0
       render(h(App, { amount: amount, hour: hour }), document.body)
     </script>
   </body>
