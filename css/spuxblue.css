@@ -413,3 +413,14 @@ th {
   opacity: 0.5;
   transition: opacity 0.15s ease-in;
 }
+
+/* gradient */
+body {
+  background: linear-gradient(90deg, #69b7eb, #b3dbd3, #f4d6db);
+}
+
+.nav {
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: -8px;
+}
