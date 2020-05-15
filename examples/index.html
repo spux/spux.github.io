@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>spux</title>
+    <link rel="stylesheet" href="https://spux.org/css/spuxblue.css" />
+  </head>
+  <body>
+    <script type="module">
+      import { html, render } from 'https://unpkg.com/spux?module'
+
+      const title = 'Spux'
+
+      render(
+        html`
+          <h1>Examples</h1>
+
+          <h5><a class="btn row" href="hello.html">hello world</a></h5>
+          <h5><a class="btn row" href="card.html">card</a></h5>
+          <h5><a class="btn row" href="circle.html">circle</a></h5>
+        `,
+        document.body
+      )
+    </script>
+  </body>
+</html>
