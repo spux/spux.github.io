@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>card component</title>
+    <link rel="stylesheet" href="../css/spux.css" />
+  </head>
+  <body>
+    <script type="module">
+      import { html, render } from '../web_modules/spux.js'
+
+      const CardComponent = () => html`
+        <div class="card col">
+          <img src="https://picsum.photos/400/300/?random" class="w-100" />
+          <h4>Card Title</h4>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </p>
+          <button class="btn">Okay</button>
+          <button class="btn primary">Cancel</button>
+        </div>
+      `
+
+      render(
+        html`
+          <h2>Card Component</h2>
+          <hr />
+          <div class="row">
+            <${CardComponent} />
+            <${CardComponent} />
+            <${CardComponent} />
+          </div>
+          <div class="row">
+            <${CardComponent} />
+            <${CardComponent} />
+            <${CardComponent} />
+          </div>
+        `,
+        document.body
+      )
+    </script>
+  </body>
+</html>
