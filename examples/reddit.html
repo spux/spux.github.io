@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <title>reddit</title>
+    <link rel="stylesheet" href="../css/spux.css" />
+  </head>
+  <body>
+    <script type="module">
+      import { html, render, Component } from '../web_modules/spux.js'
+
+      class App extends Component {
+        constructor (props) {
+          super(props)
+          this.state = {
+            items: []
+          }
+        }
+
+        updateStories (items) {
+          this.setState({ items: items })
+        }
+
+        componentDidMount () {
+          let sub = 'bitcoin'
+          let limit = 20
+          var items = []
+          const that = this
+
+          fetch('https://www.reddit.com/r/' + sub + '/.json?limit=' + limit)
+            .then(function (response) {
+              if (response.status !== 200) {
+                console.log(
+                  'Looks like there was a problem. Status Code: ' +
+                    response.status
+                )
+                return
+              }
+
+              response.json().then(function (data) {
+                var children = data.data.children
+
+                children.forEach((k, v) => {
+                  let title = k.data.title
+                  let url = k.data.url
+                  items.push({ title: title, url: url })
+                })
+                that.updateStories(items)
+              })
+            })
+            .catch(function (err) {
+              console.log('Fetch Error :-S', err)
+            })
+        }
+
+        render () {
+          const RedditComponent = props => html`
+            <div class="card">
+              <h4>${props.title}</h4>
+              <p>
+                <a href="{props.url}" target="_blank">Click For Full Story</a>
+              </p>
+            </div>
+          `
+
+          return html`
+            <h2>Reddit</h2>
+            <hr />
+
+            <div>
+              ${this.state.items.map(
+                item =>
+                  html`
+                    <${RedditComponent} title="${item.title}" />
+                  `
+              )}
+            </div>
+          `
+        }
+      }
+
+      render(
+        html`
+          <${App} />
+        `,
+        document.body
+      )
+    </script>
+  </body>
+</html>
