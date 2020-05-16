@@ -17,7 +17,7 @@
         { href: 'movingcircle.html', text: 'moving circle' }
       ]
 
-      var L = props =>
+      var LinkComponent = props =>
         html`
           <h5>
             <a class="btn row" href="${l[props.i].href}"
@@ -30,12 +30,12 @@
         html`
           <h1>Link Component</h1>
 
-          <${L} i="0" />
-          <${L} i="1" />
-          <${L} i="2" />
-          <${L} i="3" />
-          <${L} i="4" />
-          <${L} i="5" />
+          <${LinkComponent} i="0" />
+          <${LinkComponent} i="1" />
+          <${LinkComponent} i="2" />
+          <${LinkComponent} i="3" />
+          <${LinkComponent} i="4" />
+          <${LinkComponent} i="5" />
         `,
         document.body
       )
