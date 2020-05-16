@@ -20,7 +20,8 @@
         }
 
         componentDidMount () {
-          let sub = 'bitcoin'
+          let sub =
+            new URLSearchParams(window.location.search).get('r') || 'bitcoin'
           let limit = 20
           var items = []
           const that = this
@@ -41,7 +42,8 @@
                 children.forEach((k, v) => {
                   let title = k.data.title
                   let url = k.data.url
-                  items.push({ title: title, url: url })
+                  let thumbnail = k.data.thumbnail
+                  items.push({ title: title, url: url, thumbnail: thumbnail })
                 })
                 that.updateStories(items)
               })
@@ -52,8 +54,19 @@
         }
 
         render () {
+          const Img = props => {
+            if (props.src && props.src !== 'self') {
+              return html`
+                <img src="${props.src}" />
+              `
+            } else {
+              return
+            }
+          }
+
           const RedditComponent = props => html`
             <div class="card">
+              <${Img} src="${props.thumbnail}" />
               <h4>${props.title}</h4>
               <p>
                 <a href="${props.url}" target="_blank">Click For Full Story</a>
@@ -72,6 +85,7 @@
                     <${RedditComponent}
                       title="${item.title}"
                       url="${item.url}"
+                      thumbnail="${item.thumbnail}"
                     />
                   `
               )}
