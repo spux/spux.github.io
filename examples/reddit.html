@@ -56,7 +56,7 @@
             <div class="card">
               <h4>${props.title}</h4>
               <p>
-                <a href="{props.url}" target="_blank">Click For Full Story</a>
+                <a href="${props.url}" target="_blank">Click For Full Story</a>
               </p>
             </div>
           `
@@ -69,7 +69,10 @@
               ${this.state.items.map(
                 item =>
                   html`
-                    <${RedditComponent} title="${item.title}" />
+                    <${RedditComponent}
+                      title="${item.title}"
+                      url="${item.url}"
+                    />
                   `
               )}
             </div>
