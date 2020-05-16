@@ -9,13 +9,19 @@
 
       const title = 'Spux'
 
+      var l = [
+        { href: 'hello.html', text: 'hello' },
+        { href: 'card.html', text: 'card' },
+        { href: 'circle.html', text: 'circle' }
+      ]
+
       render(
         html`
           <h1>Examples</h1>
 
-          <h5><a class="btn row" href="hello.html">hello</a></h5>
-          <h5><a class="btn row" href="card.html">card</a></h5>
-          <h5><a class="btn row" href="circle.html">circle</a></h5>
+          <h5><a class="btn row" href="${l[0].href}">${l[0].text}</a></h5>
+          <h5><a class="btn row" href="${l[1].href}">${l[1].text}</a></h5>
+          <h5><a class="btn row" href="${l[2].href}">${l[2].text}</a></h5>
         `,
         document.body
       )
