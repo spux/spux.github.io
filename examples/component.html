@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>examples</title>
+    <title>component</title>
     <link rel="stylesheet" href="https://spux.org/css/spuxblue.css" />
   </head>
   <body>
@@ -17,15 +17,23 @@
         { href: 'movingcircle.html', text: 'moving circle' }
       ]
 
+      var L = props =>
+        html`
+          <h5>
+            <a class="btn row" href="${l[props.i].href}">${l[props.i].text}</a>
+          </h5>
+        `
+
       render(
         html`
-          <h1>Examples</h1>
+          <h1>Link Component</h1>
 
-          <h5><a class="btn row" href="${l[0].href}">${l[0].text}</a></h5>
-          <h5><a class="btn row" href="${l[1].href}">${l[1].text}</a></h5>
-          <h5><a class="btn row" href="${l[2].href}">${l[2].text}</a></h5>
-          <h5><a class="btn row" href="${l[3].href}">${l[3].text}</a></h5>
-          <h5><a class="btn row" href="${l[4].href}">${l[4].text}</a></h5>
+          <${L} i="0" />
+          <${L} i="1" />
+          <${L} i="2" />
+          <${L} i="3" />
+          <${L} i="4" />
+          <${L} i="5" />
         `,
         document.body
       )
