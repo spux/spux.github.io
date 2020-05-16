@@ -7,10 +7,18 @@
     <script type="module">
       import { html, render } from '../web_modules/spux.js'
 
-      const CardComponent = () => html`
-        <div class="card col">
-          <img src="https://picsum.photos/400/300/?random" class="w-100" />
-          <h4>Card Title</h4>
+      const RandomImage = () =>
+        html`
+          <img
+            src="https://picsum.photos/400/300/?random=${Math.random()}"
+            class="w-100"
+          />
+        `
+
+      const CardComponent = (props, key) => html`
+        <div key="${Math.random()}" class="card col">
+          <${RandomImage} />
+          <h4>Card Title ${key}</h4>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           </p>
