@@ -19,10 +19,8 @@
 
       var LinkComponent = props =>
         html`
-          <h5>
-            <a class="btn row" href="${l[props.i].href}"
-              >Component: ${l[props.i].text}</a
-            >
+          <h5 class="btn row">
+            <a href="${l[props.i].href}">Component: ${l[props.i].text}</a>
           </h5>
         `
 
