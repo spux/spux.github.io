@@ -4,6 +4,11 @@
     <link rel="stylesheet" href="../css/spux.css" />
   </head>
   <body>
+    <script type="module" resource="#this">
+      export default {
+        '@id': '#this'
+      }
+    </script>
     <script type="module">
       import { html, render, Component } from '../web_modules/spux.js'
 
@@ -11,7 +16,10 @@
         constructor (props) {
           super(props)
           this.state = {
-            items: []
+            items: [],
+            sub:
+              new URLSearchParams(window.location.search).get('r') ||
+              'EarthPorn'
           }
         }
 
@@ -20,13 +28,16 @@
         }
 
         componentDidMount () {
-          let sub =
-            new URLSearchParams(window.location.search).get('r') || 'bitcoin'
           let limit = 100
           var items = []
           const that = this
 
-          fetch('https://www.reddit.com/r/' + sub + '/.json?limit=' + limit)
+          fetch(
+            'https://www.reddit.com/r/' +
+              this.state.sub +
+              '/.json?limit=' +
+              limit
+          )
             .then(function (response) {
               if (response.status !== 200) {
                 console.log(
@@ -64,31 +75,51 @@
             }
           }
 
-          const RedditComponent = props => html`
-            <div class="card">
-              <${Img} src="${props.thumbnail}" />
-              <h4>${props.title}</h4>
-              <p>
-                <a href="${props.url}" target="_blank">Click For Full Story</a>
-              </p>
-            </div>
-          `
+          const RedditComponent = props => {
+            let col = props.item % 5 == 4 ? '' : '<DIV />'
+            if (props.item % 5 === 4) {
+              return html`
+                <div class="card col">
+                  <${Img} src="${props.thumbnail}" />
+                  <h4>${props.title}</h4>
+                  <p>
+                    <a href="${props.url}" target="_blank"
+                      >Click For Full Story</a
+                    >
+                  </p>
+                </div>
+                <hr />
+              `
+            } else {
+              return html`
+                <div class="card col">
+                  <${Img} src="${props.thumbnail}" />
+                  <h4>${props.title}</h4>
+                  <p>
+                    <a href="${props.url}" target="_blank"
+                      >Click For Full Story</a
+                    >
+                  </p>
+                </div>
+              `
+            }
+          }
 
           return html`
-            <h2>Reddit</h2>
+            <h2>Reddit ${this.state.sub}</h2>
             <hr />
 
             <div>
-              ${this.state.items.map(
-                item =>
-                  html`
-                    <${RedditComponent}
-                      title="${item.title}"
-                      url="${item.url}"
-                      thumbnail="${item.thumbnail}"
-                    />
-                  `
-              )}
+              ${this.state.items.map((item, i) => {
+                return html`
+                  <${RedditComponent}
+                    title="${item.title}"
+                    url="${item.url}"
+                    thumbnail="${item.thumbnail}"
+                    item="${i}"
+                  />
+                `
+              })}
             </div>
           `
         }
