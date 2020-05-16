@@ -20,7 +20,9 @@
       var L = props =>
         html`
           <h5>
-            <a class="btn row" href="${l[props.i].href}">${l[props.i].text}</a>
+            <a class="btn row" href="${l[props.i].href}"
+              >Component: ${l[props.i].text}</a
+            >
           </h5>
         `
 
