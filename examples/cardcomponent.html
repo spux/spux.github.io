@@ -15,10 +15,10 @@
           />
         `
 
-      const CardComponent = (props, key) => html`
-        <div key="${Math.random()}" class="card col">
+      const CardComponent = () => html`
+        <div class="card col">
           <${RandomImage} />
-          <h4>Card Title ${key}</h4>
+          <h4>Card Title</h4>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           </p>
