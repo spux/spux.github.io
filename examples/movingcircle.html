@@ -5,13 +5,12 @@
     <script type="module">
       // globals
       var data = {
-        amount: 90,
-        hour: 90
+        amount: 0,
+        hour: 0
       }
       Object.assign(globalThis, data)
     </script>
   </head>
-
   <body>
     <script type="module">
       import { h, html, render, Component } from '../web_modules/spux.js'
@@ -55,6 +54,25 @@
         }
       }
 
+      const Text = props => html`
+        <text
+          fill=${'rgb(' +
+            ((props.hour % 410) * 255) / 410.0 +
+            ', ' +
+            ((410 - (props.hour % 410)) * 255) / 410.0 +
+            ', 0)'}
+          x="50%"
+          y="50%"
+          dx="-25"
+          text-anchor="middle"
+          style=${{
+            font: 'bold 5rem Helvetica, Arial, sans-serif'
+          }}
+        >
+          ${props.amount}
+        </text>
+      `
+
       class Circle extends Component {
         constructor (props) {
           super(props)
@@ -72,6 +90,10 @@
                 amount="${this.props.amount}"
                 hour="${this.props.hour}"
               />
+              <${Text}
+                amount="${Math.floor(this.props.amount / 30)}"
+                hour="${this.props.hour}"
+              />
             </svg>
           `
         }
@@ -84,6 +106,18 @@
             amount: props.amount,
             hour: props.hour
           }
+        }
+
+        componentDidMount () {
+          console.log(this.state)
+          setInterval(
+            () =>
+              this.setState({
+                amount: (this.state.amount + 20) % 360,
+                hour: this.state.hour + 40
+              }),
+            1000
+          )
         }
 
         render () {

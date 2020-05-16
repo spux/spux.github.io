@@ -12,7 +12,8 @@
       var l = [
         { href: 'hello.html', text: 'hello' },
         { href: 'card.html', text: 'card' },
-        { href: 'circle.html', text: 'circle' }
+        { href: 'circle.html', text: 'circle' },
+        { href: 'movingcircle.html', text: 'moving circle' }
       ]
 
       render(
@@ -22,6 +23,7 @@
           <h5><a class="btn row" href="${l[0].href}">${l[0].text}</a></h5>
           <h5><a class="btn row" href="${l[1].href}">${l[1].text}</a></h5>
           <h5><a class="btn row" href="${l[2].href}">${l[2].text}</a></h5>
+          <h5><a class="btn row" href="${l[3].href}">${l[3].text}</a></h5>
         `,
         document.body
       )
