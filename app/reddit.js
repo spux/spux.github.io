@@ -10,8 +10,10 @@ class App extends Component {
   constructor (props) {
     super(props)
     const data = dataIslands()
-    const qs = data[0]['urn:string:queryString']
-    console.log(qs)
+    var qs
+    if (data && data[0] && data[0]['urn:string:queryString']) {
+      qs = data[0]['urn:string:queryString']
+    }
     this.state = {
       items: [],
       sub:
