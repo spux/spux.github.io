@@ -1,11 +1,23 @@
 import { html, render, Component } from '/web_modules/spux.js'
 
+function dataIslands () {
+  return Array.from(
+    document.querySelectorAll('[type="application/ld+json"]')
+  ).map(island => JSON.parse(island.innerText))
+}
+
 class App extends Component {
   constructor (props) {
     super(props)
+    const data = dataIslands()
+    const qs = data[0]['urn:string:queryString']
+    console.log(qs)
     this.state = {
       items: [],
-      sub: new URLSearchParams(window.location.search).get('r') || 'EarthPorn'
+      sub:
+        new URLSearchParams(window.location.search).get('r') ||
+        new URLSearchParams(qs).get('r') ||
+        'EarthPorn'
     }
   }
 
