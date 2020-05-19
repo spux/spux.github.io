@@ -2,7 +2,7 @@
   <head>
     <title>ledger</title>
     <link rel="stylesheet" href="../css/spuxblue.css" />
-    <script type="application/ld+json">
+    <script type="application/ld+json" src="./data/ledger.jsonld">
       {
         "@id": "",
         "urn:string:amount": 100,
@@ -15,7 +15,11 @@
       import { h, html, render, Component } from '../web_modules/spux.js'
       import dataIsland from 'https://unpkg.com/dataisland?module'
 
-      var data = dataIsland()
+      try {
+        var data = dataIsland()
+      } catch (e) {
+        console.error(e)
+      }
       var amount
       if (data && data[0] && data[0]['urn:string:amount']) {
         amount = data[0]['urn:string:amount']
