@@ -25,7 +25,7 @@
       }
 
       // UTIL
-      function getUriFromSub (data) {
+      function getUriFromPub (data) {
         if (data) {
           data = data.split(' ')
           if (data.length > 0) {
@@ -37,7 +37,7 @@
 
       // FETCH
       function fetchData (data) {
-        var uri = getUriFromSub(data)
+        var uri = getUriFromPub(data)
         fetch(uri, {
           headers: {
             Accept: 'application/ld+json'
@@ -72,7 +72,7 @@
 
       // RENDER
       function render (data) {
-        console.log(data)
+        console.log('jsonld', data)
         di.innerHTML = data
         document.body.innerHTML = JSON.stringify(data)
       }
