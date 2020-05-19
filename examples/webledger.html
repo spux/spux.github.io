@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <title>websocket</title>
+    <link rel="stylesheet" href="../css/spuxblue.css" />
+    <script type="application/ld+json" src="./data/ledger.jsonld">
+      [
+        {
+          "@id": "https://melvincarvalho.com/#me",
+          "https://w3id.org/cc#amount": [
+            {
+              "@value": "500",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "urn:query:day": [
+            {
+              "@value": "2545",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "urn:query:hour": [
+            {
+              "@value": "500",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        }
+      ]
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      // IMPORTS
+      import { h, html, Component, render } from '../web_modules/spux.js'
+      import dataIsland from 'https://unpkg.com/dataisland?module'
+      import ReconnectingWebSocket from '../web_modules/reconnecting-websocket.js'
+
+      var di = document.querySelector('[type="application/ld+json"]')
+
+      // INIT
+      var defaults = {
+        wss: 'wss://melvin.solid.live/',
+        data: 'https://melvin.solid.live/credit/count.ttl'
+      }
+
+      // UTIL
+      function getUriFromPub (data) {
+        if (data) {
+          data = data.split(' ')
+          if (data.length > 0) {
+            var uri = data[1]
+            return uri
+          }
+        }
+      }
+
+      // FETCH
+      function fetchData (data) {
+        var uri = getUriFromPub(data)
+        fetch(uri, {
+          headers: {
+            Accept: 'application/ld+json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => renderPage(data))
+      }
+
+      // EVENTS
+      let w = new ReconnectingWebSocket(defaults.wss)
+      let subject =
+        new URLSearchParams(document.location.search).get('uri') ||
+        defaults.data
+      w.onmessage = function (m) {
+        let data = m.data
+
+        if (data.match(/pub .*/)) {
+          fetchData(data)
+        }
+      }
+      w.onopen = function () {
+        console.log('websocket open')
+        w.send('sub ' + subject)
+      }
+      w.onerror = function () {
+        console.log('websocket error')
+      }
+      w.onclose = function () {
+        console.log('websocket closed')
+      }
+
+      // RENDER
+      function renderPage (data) {
+        console.log('json-ld', data)
+        di.innerHTML = JSON.stringify(data)
+        // document.body.innerHTML = JSON.stringify(data)
+      }
+
+      try {
+        var data = dataIsland()
+      } catch (e) {
+        console.error(e)
+      }
+      var amount
+      if (data && data[0] && data[0]['urn:query:day']) {
+        amount = data[0]['urn:query:day']
+      }
+      var hour
+      if (data && data[0] && data[0]['urn:query:hour']) {
+        hour = data[0]['urn:query:hour']
+      }
+
+      const InnerCircle = props => html`
+        <circle
+          cx="175"
+          cy="175"
+          stroke="Moccasin"
+          fill="none"
+          stroke-width="40"
+          r="175"
+        ></circle>
+      `
+
+      class OuterCircle extends Component {
+        constructor (props) {
+          super(props)
+        }
+        render () {
+          return html`
+            <circle
+              cx="175"
+              cy="175"
+              stroke-dashoffset="1100"
+              stroke-dasharray="1100"
+              stroke="${'rgb(' +
+                ((this.props.hour % 410) * 255) / 410.0 +
+                ', ' +
+                ((410 - (this.props.hour % 410)) * 255) / 410.0 +
+                ', 0)'}"
+              transform="rotate(-90 175 175)"
+              fill="none"
+              stroke-width="30"
+              stroke-linecap="round"
+              r="175"
+              style="stroke-dashoffset : ${((360 - this.props.amount) * 1100) /
+                360} ; transition: all 1s ease-out 0s"
+            ></circle>
+          `
+        }
+      }
+
+      const Text = props => html`
+        <text
+          fill=${'rgb(' +
+            ((props.hour % 410) * 255) / 410.0 +
+            ', ' +
+            ((410 - (props.hour % 410)) * 255) / 410.0 +
+            ', 0)'}
+          x="50%"
+          y="50%"
+          dx="-25"
+          text-anchor="middle"
+          style=${{
+            font: 'bold 5rem Helvetica, Arial, sans-serif'
+          }}
+        >
+          ${props.amount}
+        </text>
+      `
+
+      class Circle extends Component {
+        constructor (props) {
+          super(props)
+          this.state = {
+            amount: props.amount,
+            hour: props.hour
+          }
+        }
+
+        render () {
+          try {
+            var data = dataIsland()
+          } catch (e) {
+            console.error(e)
+          }
+          var amount
+          if (data && data[0]) {
+            amount = data[0][0]['urn:query:day'][0]['@value']
+            amount = amount % 360
+          }
+          var hour
+          if (data && data[0]) {
+            hour = data[0][0]['urn:query:hour'][0]['@value']
+          }
+
+          return html`
+            <svg width="300" height="300" viewBox="-25 -25 400 400">
+              <${InnerCircle} />
+              <${OuterCircle} amount="${amount}" hour="${hour}" />
+              <${Text} amount="${Math.floor(amount / 30)}" hour="${hour}" />
+            </svg>
+          `
+        }
+      }
+
+      class App extends Component {
+        constructor (props) {
+          super(props)
+          this.state = {
+            amount: props.amount,
+            hour: props.hour
+          }
+        }
+
+        componentDidMount () {
+          var that = this
+          // Select the node that will be observed for mutations
+          const targetNode = document.querySelector(
+            '[type="application/ld+json"]'
+          )
+          // Options for the observer (which mutations to observe)
+          const config = {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            characterData: true
+          }
+
+          // Callback function to execute when mutations are observed
+          const callback = function (mutationsList, observer) {
+            // Use traditional 'for loops' for IE 11
+            for (let mutation of mutationsList) {
+              if (mutation.type === 'childList') {
+                console.log('A child node has been added or removed.')
+                that.forceUpdate(() => console.log('updated'))
+              } else if (mutation.type === 'characterData') {
+                console.log('The character data attribute was modified')
+                that.forceUpdate(() => console.log('updated'))
+              }
+            }
+          }
+
+          // Create an observer instance linked to the callback function
+          const observer = new MutationObserver(callback)
+
+          // Start observing the target node for configured mutations
+          observer.observe(targetNode, config)
+        }
+
+        render () {
+          return html`
+            <h1>Ledger ${amount} ${hour}</h1>
+            <hr />
+            <${Circle}
+              amount="${this.state.amount}"
+              hour="${this.state.hour}"
+            />
+          `
+        }
+      }
+
+      render(h(App, { amount: amount, hour: hour }), document.body)
+    </script>
+  </body>
+</html>
