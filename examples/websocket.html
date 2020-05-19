@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>websocket</title>
+    <link rel="stylesheet" href="../css/spuxblue.css" />
+    <script type="application/ld+json" src="./data/ledger.jsonld">
+      {
+        "@id": "",
+        "urn:string:webledger": ""
+      }
+    </script>
+  </head>
+  <body>
+    <script type="module">
+      // IMPORTS
+      import { h, html, Component } from '../web_modules/spux.js'
+      import dataIsland from 'https://unpkg.com/dataisland?module'
+      import ReconnectingWebSocket from '../web_modules/reconnecting-websocket.js'
+
+      var di = document.querySelector('[type="application/ld+json"]')
+
+      // INIT
+      var defaults = {
+        wss: 'wss://melvin.solid.live/',
+        data: 'https://melvin.solid.live/credit/count.ttl'
+      }
+
+      // UTIL
+      function getUriFromSub (data) {
+        if (data) {
+          data = data.split(' ')
+          if (data.length > 0) {
+            var uri = data[1]
+            return uri
+          }
+        }
+      }
+
+      // FETCH
+      function fetchData (data) {
+        var uri = getUriFromSub(data)
+        fetch(uri, {
+          headers: {
+            Accept: 'application/ld+json'
+          }
+        })
+          .then(response => response.json())
+          .then(data => render(data))
+      }
+
+      // EVENTS
+      let w = new ReconnectingWebSocket(defaults.wss)
+      let subject =
+        new URLSearchParams(document.location.search).get('uri') ||
+        defaults.data
+      w.onmessage = function (m) {
+        let data = m.data
+
+        if (data.match(/pub .*/)) {
+          fetchData(data)
+        }
+      }
+      w.onopen = function () {
+        console.log('websocket open')
+        w.send('sub ' + subject)
+      }
+      w.onerror = function () {
+        console.log('websocket error')
+      }
+      w.onclose = function () {
+        console.log('websocket closed')
+      }
+
+      // RENDER
+      function render (data) {
+        console.log(data)
+        di.innerHTML = data
+        document.body.innerHTML = JSON.stringify(data)
+      }
+    </script>
+  </body>
+</html>
