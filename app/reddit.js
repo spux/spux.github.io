@@ -1,12 +1,10 @@
-import { html, render, Component } from '/web_modules/spux.js'
+// IMPORTS
+import { html, render, Component } from 'https://unpkg.com/spux?module'
+import dataIslands from 'https://unpkg.com/dataisland?module'
 
-function dataIslands () {
-  return Array.from(
-    document.querySelectorAll('[type="application/ld+json"]')
-  ).map(island => JSON.parse(island.innerText))
-}
-
+// APP
 class App extends Component {
+  // INIT
   constructor (props) {
     super(props)
     const data = dataIslands()
@@ -23,10 +21,7 @@ class App extends Component {
     }
   }
 
-  updateStories (items) {
-    this.setState({ items: items })
-  }
-
+  // FETCH
   componentDidMount () {
     let limit = 100
     var items = []
@@ -60,6 +55,12 @@ class App extends Component {
       })
   }
 
+  // UTIL
+  updateStories (items) {
+    this.setState({ items: items })
+  }
+
+  // RENDER
   render () {
     const Img = props => {
       if (props.src && props.src !== 'self') {
