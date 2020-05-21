@@ -31,10 +31,10 @@
   <body>
     <script type="module">
       // IMPORTS
-      import { h, html, Component, render } from '../web_modules/spux.js'
-      import dataIsland from 'https://unpkg.com/dataisland?module'
+      import { h, html, Component, render } from 'https://unpkg.com/spux?module'
+      import { dataIslands } from 'https://unpkg.com/dataisland?module'
 
-      var di = dataIsland()
+      var di = dataIslands()
       console.log(JSON.stringify(di))
 
       const App = (props, children) =>
