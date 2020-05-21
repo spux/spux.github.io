@@ -45,7 +45,9 @@
         html`
           <h1>Data Island</h1>
           <hr />
-          <textarea cols="100" rows="5">${JSON.stringify(di)}</textarea>
+          <textarea cols="80" rows="26">
+${JSON.stringify(di, null, 2)}</textarea
+          >
           <hr />
           <button class="btn primary">SAVE</button>
         `
