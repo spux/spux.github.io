@@ -12,20 +12,53 @@
       // IMPORTS
       import { h, html, Component, render } from 'https://unpkg.com/spux?module'
       import 'https://unpkg.com/dataisland?module'
+      var id = 'dataislanddata'
 
-      const App = (props, children) =>
-        html`
-          <h1>Data Island</h1>
-          <hr />
-          <textarea cols="80" rows="26">
-      ${JSON.stringify(di['dataislanddata'], null, 2)}</textarea
-          >
-          <hr />
-          <button class="btn primary">SAVE</button>
-        `
+      class App extends Component {
+        constructor (props) {
+          super(props)
+          this.state = {
+            text: JSON.stringify(di[id], null, 2),
+            isJson: true
+          }
+          this.save = this.save.bind(this)
+          this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleChange = event => {
+          var text = event.target.value
+          var json = isJson(text)
+          console.log('isJson', json)
+          this.setState({ text: event.target.value, isJson: json })
+        }
+
+        save (e) {
+          var json = isJson(this.state.text)
+          console.log(this.state.text)
+          updateThis(id)
+        }
+
+        render () {
+          return html`
+            <h1>Data Island</h1>
+            <hr />
+            <textarea
+              cols="80"
+              onInput=${this.handleChange}
+              value="${this.state.text}"
+              rows="26"
+            ></textarea>
+            <hr />
+            <button onClick=${this.save} class="btn primary">
+              ${this.state.isJson ? 'Save' : 'Not JSON'}
+            </button>
+          `
+        }
+      }
 
       render(h(App), document.body)
     </script>
+
     <script>
       function updateThis (id) {
         fetch(location.href).then(response =>
@@ -41,6 +74,15 @@
             }
           })
         )
+      }
+
+      function isJson (str) {
+        try {
+          JSON.parse(str)
+        } catch (e) {
+          return false
+        }
+        return true
       }
     </script>
   </body>
