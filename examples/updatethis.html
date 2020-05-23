@@ -3,9 +3,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>data island</title>
     <link rel="stylesheet" href="https://spux.org/css/spuxblue.css" />
-    <script type="application/ld+json" id="dataislanddata">
-      [1, 3, 6, {}]
-    </script>
+    <script type="application/ld+json" id="dataislanddata">[
+  1,
+  3,
+  7,
+  {}
+]</script>
   </head>
   <body>
     <script type="module">
@@ -35,6 +38,7 @@
         save (e) {
           var json = isJson(this.state.text)
           console.log(this.state.text)
+          di[id] = JSON.parse(this.state.text)
           updateThis(id)
         }
 
