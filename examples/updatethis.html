@@ -3,12 +3,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>data island</title>
     <link rel="stylesheet" href="https://spux.org/css/spuxblue.css" />
-    <script type="application/ld+json" id="dataislanddata">[
-  1,
-  3,
-  7,
-  {}
-]</script>
+    <script type="application/ld+json" id="dataislanddata">
+      [1, 3, "Change me!"", {}]
+    </script>
   </head>
   <body>
     <script type="module">
@@ -72,9 +69,13 @@
               '$1' + JSON.stringify(di[id], null, 2) + '$3'
             )
             if (newhtml !== html) {
-              fetch(location.href, { method: 'PUT', body: newhtml }).then(
-                console.log
-              )
+              fetch(location.href, {
+                method: 'PUT',
+                body: newhtml,
+                headers: {
+                  'content-type': 'text/html'
+                }
+              }).then(console.log)
             }
           })
         )
