@@ -1,11 +1,10 @@
 // IMPORTS
 let shimScript =
   './' +
-  window.location.pathname
+  window.location.href
     .split('/')
     .pop()
     .replace('.html', '')
     .concat('.js')
 
 import(shimScript)
-
